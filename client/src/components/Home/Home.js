@@ -39,7 +39,7 @@ function Home() {
           <div className={styles.banner}>
             <div className={styles["banner-body"]}>
               <h2 className={styles["banner-title"]}>
-                {isLanguageEnglish ? "Explore content" : "Przeglądaj treść"}
+                {isLanguageEnglish ? "Explore content" : "探索更多"}
               </h2>
               <p className={styles["banner-description"]}>
                 {isLanguageEnglish
