@@ -33,6 +33,8 @@ function JoinGame() {
     if (message === "correct") {
       dispatch(addPlayer(gameId, playerId))
       setIsPlayerAdded(true)
+    } else if (message === "same") {
+      alert("You cannot join a game created by yourself.")
     } else {
       alert("You entered the wrong pin or the game does not exist.")
     }
