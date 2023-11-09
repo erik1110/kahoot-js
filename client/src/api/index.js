@@ -63,7 +63,7 @@ export const updateQuestionLeaderboard = (questionResult, id) =>
 export const updateCurrentLeaderboard = (result, id) =>
   API.patch(`/leaderboard/${id}/currentleaderboard`, result)
 
-const AUTH_API = axios.create({ baseURL: "http://localhost:4000/api/auth" })
+const AUTH_API = axios.create({ baseURL: "http://localhost:1000/api/auth" })
 
 export const login = (formData) => AUTH_API.post("/login", formData)
 export const register = (formData) => AUTH_API.post("/register", formData)
