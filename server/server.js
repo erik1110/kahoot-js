@@ -42,7 +42,7 @@ const io = require("socket.io")(3001, {
   },
 });
 
-let game;
+let games = {};
 let leaderboard;
 let players = [];
 
@@ -60,28 +60,34 @@ io.on("connection", (socket) => {
     console.log(reason);
   });
   socket.on("init-game", (newGame, newLeaderboard) => {
-    game = JSON.parse(JSON.stringify(newGame));
-    leaderboard = JSON.parse(JSON.stringify(newLeaderboard));
-    socket.join(game.pin);
-    hostId = socket.id;
-    console.log("Host with id " + socket.id + " started game and joined room: " + game.pin);
+    games[newGame.pin] = {
+      game: JSON.parse(JSON.stringify(newGame)),
+      leaderboard: JSON.parse(JSON.stringify(newLeaderboard)),
+      hostId: socket.id,
+    };
+    socket.join(newGame.pin);
+    console.log("Host with id " + socket.id + " started game and joined room: " + newGame.pin);
   });
 
   socket.on("add-player", (user, socketId, pin, callback) => {
-    // same account
-    if (game.hostId.toString() === user._id.toString()) {
-      callback("same", game._id);
-    } else {
-      if (game.pin === pin) {
-        addPlayer(user.userName, socketId);
-        callback("correct", user._id, game._id);
-        socket.join(game.pin);
-        console.log("Student " + user.userName + " with id " + socket.id + " joined room " + game.pin);
-        let player = getPlayer(socketId);
-        io.emit("player-added", player);
+    const gameInstance = games[pin];
+
+    if (gameInstance) {
+      // 檢查是否已經是房主
+      console.log("gameInstance", gameInstance)
+      console.log("user:", user)
+      if (gameInstance.game.hostId.toString() === user._id.toString()) {
+        callback("same", gameInstance.game._id);
       } else {
-        callback("wrong", game._id);
+        addPlayer(user.userName, socketId);
+        callback("correct", user._id, gameInstance.game._id);
+        socket.join(pin);
+        console.log("Student " + user.userName + " with id " + socket.id + " joined room " + pin);
+        let player = getPlayer(socketId);
+        io.to(pin).emit("player-added", player);
       }
+    } else {
+      callback("wrong", null);
     }
   });
 
