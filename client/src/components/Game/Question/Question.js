@@ -6,12 +6,14 @@ import circle from "../../../assets/circle.svg"
 import square from "../../../assets/square.svg"
 import Answer from "../Answer/Answer"
 
-function Question({ question, timer, host, isAnswerClicked, onClick }) {
+function Question({question, timer, host, isAnswerClicked, onClick }) {
   return (
     <div className={styles["question"]}>
       {host && (
         <>
-          <h2 className={styles["question-name"]}>{question.question}</h2>
+          <h2 className={styles["question-name"]}>
+            Question {question.questionIndex}: {question.question}
+          </h2>
           <div className={styles["container"]}>
             <div className={styles["question-time"]}>{timer}</div>
             {question.backgroundImage && (

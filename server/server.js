@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-
 const { authenticateToken, regenerateAccessToken } = require("./middleware/auth");
 
 const userRouter = require("./routes/user");
@@ -69,15 +68,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("add-player", (user, socketId, pin, callback) => {
-    if (game.pin === pin) {
-      addPlayer(user.userName, socketId);
-      callback("correct", user._id, game._id);
-      socket.join(game.pin);
-      console.log("Student " + user.userName + " with id " + socket.id + " joined room " + game.pin);
-      let player = getPlayer(socketId);
-      io.emit("player-added", player);
+    // same account
+    if (game.hostId.toString() === user._id.toString()) {
+      callback("same", game._id);
     } else {
-      callback("wrong", game._id);
+      if (game.pin === pin) {
+        addPlayer(user.userName, socketId);
+        callback("correct", user._id, game._id);
+        socket.join(game.pin);
+        console.log("Student " + user.userName + " with id " + socket.id + " joined room " + game.pin);
+        let player = getPlayer(socketId);
+        io.emit("player-added", player);
+      } else {
+        callback("wrong", game._id);
+      }
     }
   });
 
