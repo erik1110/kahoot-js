@@ -46,8 +46,8 @@ let games = {};
 let leaderboard;
 let players = [];
 
-const addPlayer = (userName, socketId) => {
-  !players.some((player) => player.socketId === socketId) && players.push({ userName, socketId });
+const addPlayer = (userName, socketId, pin) => {
+  !players.some((player) => player.socketId === socketId) && players.push({ userName, socketId, pin});
 };
 
 const getPlayer = (socketId) => {
@@ -58,6 +58,11 @@ io.on("connection", (socket) => {
   socket.on("disconnect", (reason) => {
     console.log("Socket " + socket.id + " was disconnected");
     console.log(reason);
+    let player = getPlayer(socket.id);
+    console.log("player:", player)
+    if (player) {
+      io.to(player.pin).emit("player-disconnected", player);
+    }
   });
   socket.on("init-game", (newGame, newLeaderboard) => {
     games[newGame.pin] = {
@@ -79,7 +84,7 @@ io.on("connection", (socket) => {
       if (gameInstance.game.hostId.toString() === user._id.toString()) {
         callback("same", gameInstance.game._id);
       } else {
-        addPlayer(user.userName, socketId);
+        addPlayer(user.userName, socketId, pin);
         callback("correct", user._id, gameInstance.game._id);
         socket.join(pin);
         console.log("Student " + user.userName + " with id " + socket.id + " joined room " + pin);

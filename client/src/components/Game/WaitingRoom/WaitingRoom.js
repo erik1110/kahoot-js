@@ -13,8 +13,20 @@ function WaitingRoom({ pin, socket }) {
       setNumPlayers((prevNumPlayers) => prevNumPlayers + 1);
     };
     socket.on("player-added", handlePlayerAdded);
+
+    const handlePlayerDisconnected = (disconnectedPlayer) => {
+      setPlayerList((prevPlayerList) =>
+        prevPlayerList.filter(
+          (player) => player.userName !== disconnectedPlayer.userName
+        )
+      );
+      setNumPlayers((prevNumPlayers) => prevNumPlayers - 1);
+    };
+    socket.on("player-disconnected", handlePlayerDisconnected);
+
     return () => {
       socket.off("player-added", handlePlayerAdded);
+      socket.off("player-disconnected", handlePlayerDisconnected);
     };
   }, [socket]);
 
@@ -26,7 +38,6 @@ function WaitingRoom({ pin, socket }) {
     );
     setNumPlayers((prevNumPlayers) => prevNumPlayers - 1);
   };
-
 
   return (
     <div className={styles["waiting-room"]}>
