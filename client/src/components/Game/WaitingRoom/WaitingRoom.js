@@ -17,11 +17,11 @@ function WaitingRoom({ pin, socket }) {
     };
   }, [socket]);
 
-  const handleKickPlayer = (username) => {
+  const handleKickPlayer = (userName) => {
     // Emit a "kick-player" event to the server
-    socket.emit("kick-player", {"username": username, "socketId": socket.id, "pin": pin});
+    socket.emit("kick-player", {"userName": userName, "socketId": socket.id, "pin": pin});
     setPlayerList((prevPlayerList) =>
-      prevPlayerList.filter((player) => player.userName !== username)
+      prevPlayerList.filter((player) => player.userName !== userName)
     );
     console.log("socket.id:", socket.id)
   };

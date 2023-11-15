@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
 
   socket.on('kick-player', (data) => {
     // emit cancer-game to client student
-    console.log("Student " + data.username + " with id " + data.socketId + " was kicked");
+    console.log("Student " + data.userName + " with id " + data.socketId + " was kicked");
     socket.to(data.pin).emit('cancer-game', { message: 'You have been kicked from the game.' });
   });
 
