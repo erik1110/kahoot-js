@@ -43,7 +43,7 @@ function WaitingRoom({ pin, socket }) {
                 <li key={player.playerId}>
                   <mark>{player.userName}</mark>
                   <small>{isLanguageEnglish ? "Student" : "學生"}</small>
-                  <button onClick={() => handleKickPlayer(player.userName)}>
+                  <button key={`kick-${player.playerId}`} onClick={() => handleKickPlayer(player.userName)}>
                     {isLanguageEnglish ? "Kick" : "踢除"}
                   </button>
                 </li>
