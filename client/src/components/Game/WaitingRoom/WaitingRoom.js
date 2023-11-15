@@ -12,6 +12,11 @@ function WaitingRoom({ pin, socket }) {
     })
   }, [playerList, socket])
 
+  const handleKickPlayer = (username) => {
+    // Emit a "kick-player" event to the server
+    socket.emit("kick-player", {"username": username, "socketId": socket.id});
+  };
+
   return (
     <div className={styles["waiting-room"]}>
       <h1 className={styles["title"]}>
@@ -34,6 +39,9 @@ function WaitingRoom({ pin, socket }) {
                 <li>
                   <mark>{player.userName}</mark>
                   <small>{isLanguageEnglish ? "Student" : "學生"}</small>
+                  <button onClick={() => handleKickPlayer(player.userName)}>
+                    {isLanguageEnglish ? "Kick" : "踢除"}
+                  </button>
                 </li>
               ))}
             </ol>

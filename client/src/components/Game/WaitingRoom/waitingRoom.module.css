@@ -127,6 +127,12 @@
   text-align: right;
   color: #fff;
 }
+.leaderboard ol li button {
+  position: relative;
+  z-index: 2;
+  display: block;
+  color: #fff;
+}
 .leaderboard ol li::after {
   content: "";
   position: absolute;
