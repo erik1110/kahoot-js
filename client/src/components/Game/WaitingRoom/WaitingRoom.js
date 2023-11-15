@@ -7,10 +7,14 @@ function WaitingRoom({ pin, socket }) {
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
   useEffect(() => {
-    socket.on("player-added", (player) => {
-      setPlayerList([...playerList, player])
-    })
-  }, [playerList, socket])
+    const handlePlayerAdded = (player) => {
+      setPlayerList((prevPlayerList) => [...prevPlayerList, player]);
+    };
+    socket.on("player-added", handlePlayerAdded);
+    return () => {
+      socket.off("player-added", handlePlayerAdded);
+    };
+  }, [socket]);
 
   const handleKickPlayer = (username) => {
     // Emit a "kick-player" event to the server
@@ -36,7 +40,7 @@ function WaitingRoom({ pin, socket }) {
           {playerList.length > 0 ? (
             <ol>
               {playerList.map((player) => (
-                <li>
+                <li key={player.playerId}>
                   <mark>{player.userName}</mark>
                   <small>{isLanguageEnglish ? "Student" : "學生"}</small>
                   <button onClick={() => handleKickPlayer(player.userName)}>
