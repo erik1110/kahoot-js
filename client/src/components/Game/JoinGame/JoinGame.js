@@ -27,17 +27,13 @@ function JoinGame() {
       )
       history.push(`/games/player/${gameId}`)
     })
-
-    socket?.on("kick-player", ({ username, socketId }) => {
-      const currentUserSocketId = socket.id;
-      console.log("username:", username)
-      if (socketId === currentUserSocketId) {
-        alert("You have been kicked from the room.");
-        history.push(`/games/joingame`);
-      }
-    });
-
+    socket?.on("cancer-game", (data) => {
+      alert(data.message);
+      setIsPlayerAdded(false);
+      });
   }, [socket, dispatch, history, user.result._id])
+
+
 
   const result = (message, playerId, gameId) => {
     if (message === "correct") {

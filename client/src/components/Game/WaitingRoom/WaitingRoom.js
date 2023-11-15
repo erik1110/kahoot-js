@@ -18,8 +18,9 @@ function WaitingRoom({ pin, socket }) {
 
   const handleKickPlayer = (username) => {
     // Emit a "kick-player" event to the server
-    socket.emit("kick-player", {"username": username, "socketId": socket.id});
+    socket.emit("kick-player", {"username": username, "socketId": socket.id, "pin": pin});
   };
+
 
   return (
     <div className={styles["waiting-room"]}>

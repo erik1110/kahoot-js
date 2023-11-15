@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
         socket.join(pin);
         console.log("Student " + user.userName + " with id " + socket.id + " joined room " + pin);
         let player = getPlayer(socketId);
-        io.to(pin).emit("player-added", player);
+        socket.to(pin).emit("player-added", player);
       }
     } else {
       callback("wrong", null);
@@ -98,8 +98,10 @@ io.on("connection", (socket) => {
     socket.to(game.pin).emit("move-to-game-page", game._id);
   });
 
-  socket.on("kick-player", ({ username, socketId }) => {
-    socket.to(game.pin).emit("player-kicked", { username, socketId });
+  socket.on('kick-player', (data) => {
+    // emit cancer-game to client student
+    console.log("Student " + data.username + " with id " + data.socketId + " was kicked");
+    socket.to(data.pin).emit('cancer-game', { message: 'You have been kicked from the game.' });
   });
 
   socket.on("question-preview", (callback) => {
