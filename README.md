@@ -8,6 +8,7 @@ The project is inspired by the [Kahoot](https://kahoot.com) app. The main functi
 
 ## Node
 USE node-16
+
 ## Installation
 
 Client side
@@ -68,12 +69,10 @@ ACCESS_TOKEN_SECRET=string (required string)
 REFRESH_TOKEN_SECRET=string (required string)
 ```
 
-## Contributing
+## Illustration
 
-As this is my first project in the Javascript ecosystem, most of the code needs to be refactored or rewritten :) There are a lot of bugs in the code, which I'm sure you'll find quickly.
+### Socket
 
-Also many new features needs to be added to call this project as a full-fledged Kahoot clone.
+The diagram illustrates how to implement methods for adding players and removing players in a socket.
 
-Feel free to contribute.
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+<img src="./image/socket.jpeg">
