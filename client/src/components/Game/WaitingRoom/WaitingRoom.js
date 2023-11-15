@@ -4,6 +4,7 @@ import styles from "./waitingRoom.module.css"
 
 function WaitingRoom({ pin, socket }) {
   const [playerList, setPlayerList] = useState([])
+  console.log("playerList:", playerList)
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
   useEffect(() => {
@@ -19,6 +20,10 @@ function WaitingRoom({ pin, socket }) {
   const handleKickPlayer = (username) => {
     // Emit a "kick-player" event to the server
     socket.emit("kick-player", {"username": username, "socketId": socket.id, "pin": pin});
+    setPlayerList((prevPlayerList) =>
+      prevPlayerList.filter((player) => player.userName !== username)
+    );
+    console.log("socket.id:", socket.id)
   };
 
 
