@@ -4,12 +4,13 @@ import styles from "./waitingRoom.module.css"
 
 function WaitingRoom({ pin, socket }) {
   const [playerList, setPlayerList] = useState([])
-  console.log("playerList:", playerList)
+  const [numPlayers, setNumPlayers] = useState(0);
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
   useEffect(() => {
     const handlePlayerAdded = (player) => {
       setPlayerList((prevPlayerList) => [...prevPlayerList, player]);
+      setNumPlayers((prevNumPlayers) => prevNumPlayers + 1);
     };
     socket.on("player-added", handlePlayerAdded);
     return () => {
@@ -23,7 +24,7 @@ function WaitingRoom({ pin, socket }) {
     setPlayerList((prevPlayerList) =>
       prevPlayerList.filter((player) => player.userName !== userName)
     );
-    console.log("socket.id:", socket.id)
+    setNumPlayers((prevNumPlayers) => prevNumPlayers - 1);
   };
 
 
@@ -43,6 +44,7 @@ function WaitingRoom({ pin, socket }) {
           <h1 className={styles["leaderboard-title"]}>
             {isLanguageEnglish ? "Player List" : "玩家列表"}
           </h1>
+          <p>{isLanguageEnglish ? "Current Players: " : "目前玩家人數："}{numPlayers}</p>
           {playerList.length > 0 ? (
             <ol>
               {playerList.map((player) => (
