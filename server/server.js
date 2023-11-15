@@ -98,6 +98,10 @@ io.on("connection", (socket) => {
     socket.to(game.pin).emit("move-to-game-page", game._id);
   });
 
+  socket.on("kick-player", ({ username, socketId }) => {
+    socket.to(game.pin).emit("player-kicked", { username, socketId });
+  });
+
   socket.on("question-preview", (callback) => {
     callback();
     socket.to(game.pin).emit("host-start-preview");
