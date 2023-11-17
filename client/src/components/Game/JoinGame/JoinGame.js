@@ -27,7 +27,13 @@ function JoinGame() {
       )
       history.push(`/games/player/${gameId}`)
     })
+    socket?.on("cancer-game", (data) => {
+      alert(data.message);
+      setIsPlayerAdded(false);
+      });
   }, [socket, dispatch, history, user.result._id])
+
+
 
   const result = (message, playerId, gameId) => {
     if (message === "correct") {

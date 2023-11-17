@@ -4,13 +4,40 @@ import styles from "./waitingRoom.module.css"
 
 function WaitingRoom({ pin, socket }) {
   const [playerList, setPlayerList] = useState([])
+  const [numPlayers, setNumPlayers] = useState(0);
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
   useEffect(() => {
-    socket.on("player-added", (player) => {
-      setPlayerList([...playerList, player])
-    })
-  }, [playerList, socket])
+    const handlePlayerAdded = (player) => {
+      setPlayerList((prevPlayerList) => [...prevPlayerList, player]);
+      setNumPlayers((prevNumPlayers) => prevNumPlayers + 1);
+    };
+    socket.on("player-added", handlePlayerAdded);
+
+    const handlePlayerDisconnected = (disconnectedPlayer) => {
+      setPlayerList((prevPlayerList) =>
+        prevPlayerList.filter(
+          (player) => player.userName !== disconnectedPlayer.userName
+        )
+      );
+      setNumPlayers((prevNumPlayers) => prevNumPlayers - 1);
+    };
+    socket.on("player-disconnected", handlePlayerDisconnected);
+
+    return () => {
+      socket.off("player-added", handlePlayerAdded);
+      socket.off("player-disconnected", handlePlayerDisconnected);
+    };
+  }, [socket]);
+
+  const handleKickPlayer = (userName) => {
+    // Emit a "kick-player" event to the server
+    socket.emit("kick-player", {"userName": userName, "socketId": socket.id, "pin": pin});
+    setPlayerList((prevPlayerList) =>
+      prevPlayerList.filter((player) => player.userName !== userName)
+    );
+    setNumPlayers((prevNumPlayers) => prevNumPlayers - 1);
+  };
 
   return (
     <div className={styles["waiting-room"]}>
@@ -28,12 +55,16 @@ function WaitingRoom({ pin, socket }) {
           <h1 className={styles["leaderboard-title"]}>
             {isLanguageEnglish ? "Player List" : "玩家列表"}
           </h1>
+          <p>{isLanguageEnglish ? "Current Players: " : "目前玩家人數："}{numPlayers}</p>
           {playerList.length > 0 ? (
             <ol>
               {playerList.map((player) => (
-                <li>
+                <li key={player.playerId}>
                   <mark>{player.userName}</mark>
                   <small>{isLanguageEnglish ? "Student" : "學生"}</small>
+                  <button key={`kick-${player.playerId}`} onClick={() => handleKickPlayer(player.userName)}>
+                    {isLanguageEnglish ? "Kick" : "踢除"}
+                  </button>
                 </li>
               ))}
             </ol>
