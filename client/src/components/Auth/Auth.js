@@ -7,6 +7,7 @@ import {
   Typography,
   Container,
   Snackbar,
+  Select
 } from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
 import useStyles from "./styles";
@@ -14,6 +15,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "./Input";
+import SelectInput from "./SelectInput";
 import { login, register } from "../../actions/auth";
 
 const initialState = {
@@ -49,7 +51,14 @@ function Auth() {
         } else if (response.status === 400) {
           // If the dispatch is not successful with a 400 status code,
           // parse the error message from the response and show it in the Snackbar
-          setErrorMessage(`Registration failed: ${response.error.response.data.message}`);
+          // setErrorMessage(`Registration failed: ${response.error.response.data.message}`);
+          const errorMessage= response.error.response.data.message;
+          if (errorMessage.includes('shorter than the minimum allowed length')) {
+            setErrorMessage(`Username must be at least five characters.`);
+          } else {
+            // If the error message does not contain 'userType'
+            setErrorMessage(`Registration failed: ${errorMessage}`);
+          }
         } else {
           setErrorMessage(`Registration failed`);
         }
@@ -116,10 +125,15 @@ function Auth() {
                   handleChange={handleChange}
                   half
                 />
-                <Input
+                <SelectInput
                   name="userType"
-                  label={isLanguageEnglish ? "User type (Teacher or Student)" : "使用者類別 (Teacher or Student)"}
+                  value={formData.userType}
                   handleChange={handleChange}
+                  label={isLanguageEnglish ? "User type" : "使用者類別"}
+                  options={[
+                    { value: "Teacher", label: "Teacher" },
+                    { value: "Student", label: "Student" },
+                  ]}
                 />
                 <Input
                   name="mail"
