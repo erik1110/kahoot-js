@@ -6,7 +6,9 @@ import {
   Grid,
   Typography,
   Container,
+  Snackbar,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import useStyles from "./styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
@@ -29,19 +31,39 @@ function Auth() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
 
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (isSignup) {
-      dispatch(register(formData, history))
-    } else {
-      dispatch(login(formData, history))
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isSignup) {
+        const response = await dispatch(register(formData, history));
+        console.log("response:", response)
+        if (response.status === 200) {
+          // If the dispatch is successful, show a green Snackbar for successful registration
+          console.log("Register OK!")
+        } else if (response.status === 400) {
+          // If the dispatch is not successful with a 400 status code,
+          // parse the error message from the response and show it in the Snackbar
+          setErrorMessage(`Registration failed: ${response.error.response.data.message}`);
+        } else {
+          setErrorMessage(`Registration failed`);
+        }
+      } else {
+        await dispatch(login(formData, history));
+        // Handle login success if needed
+      }
+    } catch (error) {
+      console.log("error:", error)
+      // If there is an error, set the error message
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -58,6 +80,16 @@ function Auth() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+        {errorMessage && (
+          <Snackbar
+            open={!!errorMessage}
+            autoHideDuration={6000}
+            onClose={() => setErrorMessage("")}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity="error">{errorMessage}</Alert>
+          </Snackbar>
+        )}
         <Typography component="h1" variant="h5">
           {isSignup
             ? isLanguageEnglish

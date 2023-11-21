@@ -16,7 +16,9 @@ export const register = (formData, history) => async (dispatch) => {
     const { data } = await api.register(formData);
     dispatch({ type: AUTH, data });
     history.push("/");
+    return { status: 200, data };
   } catch (error) {
     console.log(error);
+    return { status: 400, error };
   }
 };
