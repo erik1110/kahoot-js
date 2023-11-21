@@ -6,12 +6,15 @@ import {
   Grid,
   Typography,
   Container,
+  Snackbar,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import useStyles from "./styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "./Input";
+import SelectInput from "./SelectInput";
 import { login, register } from "../../actions/auth";
 
 const initialState = {
@@ -29,17 +32,36 @@ function Auth() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
 
   const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (isSignup) {
-      dispatch(register(formData, history))
-    } else {
-      dispatch(login(formData, history))
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isSignup) {
+        const response = await dispatch(register(formData, history));
+        console.log("response:", response)
+        if (response.status === 200) {
+          console.log("Register OK!")
+        } else if (response.status === 400) {
+          const errorMessage= response.error.response.data.message;
+          if (errorMessage.includes('shorter than the minimum allowed length')) {
+            setErrorMessage(`Username must be at least five characters.`);
+          } else {
+            setErrorMessage(`Registration failed: ${errorMessage}`);
+          }
+        } else {
+          setErrorMessage(`Registration failed`);
+        }
+      } else {
+        await dispatch(login(formData, history));
+      }
+    } catch (error) {
+      console.log("error:", error)
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
   const handleChange = (e) => {
@@ -58,6 +80,16 @@ function Auth() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+        {errorMessage && (
+          <Snackbar
+            open={!!errorMessage}
+            autoHideDuration={6000}
+            onClose={() => setErrorMessage("")}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity="error">{errorMessage}</Alert>
+          </Snackbar>
+        )}
         <Typography component="h1" variant="h5">
           {isSignup
             ? isLanguageEnglish
@@ -84,10 +116,15 @@ function Auth() {
                   handleChange={handleChange}
                   half
                 />
-                <Input
+                <SelectInput
                   name="userType"
-                  label={isLanguageEnglish ? "User type (Teacher or Student)" : "使用者類別 (Teacher or Student)"}
+                  value={formData.userType}
                   handleChange={handleChange}
+                  label={isLanguageEnglish ? "User type" : "使用者類別"}
+                  options={[
+                    { value: "Teacher", label: "Teacher" },
+                    { value: "Student", label: "Student" },
+                  ]}
                 />
                 <Input
                   name="mail"
