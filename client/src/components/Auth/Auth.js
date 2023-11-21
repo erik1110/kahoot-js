@@ -46,17 +46,12 @@ function Auth() {
         const response = await dispatch(register(formData, history));
         console.log("response:", response)
         if (response.status === 200) {
-          // If the dispatch is successful, show a green Snackbar for successful registration
           console.log("Register OK!")
         } else if (response.status === 400) {
-          // If the dispatch is not successful with a 400 status code,
-          // parse the error message from the response and show it in the Snackbar
-          // setErrorMessage(`Registration failed: ${response.error.response.data.message}`);
           const errorMessage= response.error.response.data.message;
           if (errorMessage.includes('shorter than the minimum allowed length')) {
             setErrorMessage(`Username must be at least five characters.`);
           } else {
-            // If the error message does not contain 'userType'
             setErrorMessage(`Registration failed: ${errorMessage}`);
           }
         } else {
@@ -64,15 +59,12 @@ function Auth() {
         }
       } else {
         await dispatch(login(formData, history));
-        // Handle login success if needed
       }
     } catch (error) {
       console.log("error:", error)
-      // If there is an error, set the error message
       setErrorMessage("An error occurred. Please try again.");
     }
   };
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
