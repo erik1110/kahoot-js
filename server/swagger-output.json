@@ -12,7 +12,7 @@
       "description": "登入相關"
     },
     {
-      "name": "Users",
+      "name": "User",
       "description": "使用者"
     },
     {
@@ -24,11 +24,11 @@
       "description": "遊戲"
     },
     {
-      "name": "playerResults",
+      "name": "PlayerResults",
       "description": "遊戲結果"
     },
     {
-      "name": "leaderboard",
+      "name": "Leaderboard",
       "description": "排行榜"
     }
   ],
@@ -136,6 +136,10 @@
     },
     "/api/users/": {
       "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "取得所有帳號 (Get all users)",
         "description": "",
         "responses": {
           "200": {
@@ -150,40 +154,59 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "建立使用者帳號 (Create a user)",
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter",
             "in": "body",
+            "description": "Body",
             "schema": {
               "type": "object",
               "properties": {
                 "userType": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Teacher"
                 },
                 "firstName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Erik"
                 },
                 "lastName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Ho"
                 },
                 "userName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "erik1110"
                 },
                 "mail": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "abc@gmail.com"
                 },
                 "password": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "abc12345678"
                 }
               }
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -196,11 +219,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/users/{id}": {
       "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "取得特定使用者 (Get the user)",
         "description": "",
         "parameters": [
           {
@@ -226,9 +258,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "刪除使用者帳號 (Delete the user)",
         "description": "",
         "parameters": [
           {
@@ -254,9 +295,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "更新使用者帳號 (Update the user)",
         "description": "",
         "parameters": [
           {
@@ -309,11 +359,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得全部題庫 (Get all quizzes)",
         "description": "",
         "responses": {
           "200": {
@@ -328,49 +387,121 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "post": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "建立題庫 (Create a quiz)",
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter",
             "in": "body",
+            "description": "Body",
             "schema": {
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "My quiz"
                 },
                 "backgroundImage": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "data:image/jpeg;base64,..."
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "This is my quiz."
                 },
                 "creatorName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Erik"
                 },
                 "pointsPerQuestion": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 5
                 },
                 "isPublic": {
-                  "example": "any"
+                  "type": "boolean",
+                  "example": true
                 },
                 "tags": {
-                  "example": "any"
+                  "type": "array",
+                  "example": [
+                    "test1"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "likesCount": {
-                  "example": "any"
+                  "type": "array",
+                  "example": [],
+                  "items": {}
                 },
                 "questionList": {
-                  "example": "any"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "questionType": {
+                        "type": "string",
+                        "example": "Quiz"
+                      },
+                      "pointType": {
+                        "type": "string",
+                        "example": "Double"
+                      },
+                      "answerTime": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "backgroundImage": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "question": {
+                        "type": "string",
+                        "example": "Which planet is known as the Red Planet?"
+                      },
+                      "answerList": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "a"
+                            },
+                            "body": {
+                              "type": "string",
+                              "example": "Venus"
+                            },
+                            "isCorrect": {
+                              "type": "boolean",
+                              "example": false
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -383,11 +514,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/public": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得公開題庫 (Get public quizzes)",
         "description": "",
         "parameters": [
           {
@@ -409,11 +549,20 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/search": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "題庫搜尋 (Search the Quizzes)",
         "description": "",
         "parameters": [
           {
@@ -440,11 +589,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/teacher/{teacherId}": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得老師的題庫 (Get the teacher quizzes)",
         "description": "",
         "parameters": [
           {
@@ -467,11 +625,20 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/{id}": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得特定題庫 (Get the quiz)",
         "description": "",
         "parameters": [
           {
@@ -497,9 +664,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "刪除題庫 (Delete the quiz)",
         "description": "",
         "parameters": [
           {
@@ -525,9 +701,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "更新題庫 (Update the quiz)",
         "description": "",
         "parameters": [
           {
@@ -583,11 +768,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/{id}/likeQuiz": {
       "patch": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "按讚題庫 (Like the Quiz)",
         "description": "",
         "parameters": [
           {
@@ -613,11 +807,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/{id}/commentQuiz": {
       "post": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "評論題庫 (Comment the Quiz)",
         "description": "",
         "parameters": [
           {
@@ -652,11 +855,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/{quizId}/questions": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得全部問題 (Get all questions)",
         "description": "",
         "parameters": [
           {
@@ -682,9 +894,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "post": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "新增問題 (Add questions)",
         "description": "",
         "parameters": [
           {
@@ -737,11 +958,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/quizes/{quizId}/questions/{questionId}": {
       "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "取得特定問題 (Get the question by questionId)",
         "description": "",
         "parameters": [
           {
@@ -773,9 +1003,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "刪除問題 (Delete the question by questionId)",
         "description": "",
         "parameters": [
           {
@@ -807,9 +1046,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "Quiz"
+        ],
+        "summary": "更新問題 (Update the question by questionId)",
         "description": "",
         "parameters": [
           {
@@ -868,7 +1116,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/games/": {
@@ -1151,6 +1404,10 @@
     },
     "/api/playerResults/": {
       "get": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "取得全部玩家結果 (Get player results)",
         "description": "",
         "responses": {
           "200": {
@@ -1165,34 +1422,51 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "post": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "建立玩家結果 (Create a player result)",
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter",
             "in": "body",
+            "description": "Body",
             "schema": {
               "type": "object",
               "properties": {
                 "playerId": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "6538974895cace142e42c86a"
                 },
                 "gameId": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "6538974895cace142e42c813"
                 },
                 "score": {
-                  "example": "any"
+                  "type": "number",
+                  "example": 1
                 },
                 "answers": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "b"
                 }
               }
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -1205,11 +1479,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/playerResults/{id}": {
       "get": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "取得特定玩家結果 (Get the player result)",
         "description": "",
         "parameters": [
           {
@@ -1235,9 +1518,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "刪除玩家結果 (Delete the player result)",
         "description": "",
         "parameters": [
           {
@@ -1263,9 +1555,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "更新玩家結果 (Update the player result)",
         "description": "",
         "parameters": [
           {
@@ -1309,11 +1610,20 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/playerResults/{playerResultId}/answers": {
       "get": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "取得所有答案 (Get the Answers)",
         "description": "",
         "parameters": [
           {
@@ -1339,9 +1649,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "加答案 (Add an answer)",
         "description": "",
         "parameters": [
           {
@@ -1376,11 +1695,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/playerResults/{playerResultId}/answers/{answerId}": {
       "get": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "取得答案 (Get the Answer)",
         "description": "",
         "parameters": [
           {
@@ -1412,9 +1740,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "刪除所有答案 (Delete the Answers)",
         "description": "",
         "parameters": [
           {
@@ -1446,9 +1783,18 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "patch": {
+        "tags": [
+          "PlayerResults"
+        ],
+        "summary": "更新答案 (Update the Answer)",
         "description": "",
         "parameters": [
           {
@@ -1501,30 +1847,46 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/leaderboard/": {
       "post": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "建立排行榜 (Create a Leaderboard)",
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter",
             "in": "body",
+            "description": "Body",
             "schema": {
               "type": "object",
               "properties": {
                 "gameId": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "6538974895cace142e42c86a"
                 },
                 "playerResultList": {
-                  "example": "any"
+                  "type": "array",
+                  "example": [],
+                  "items": {}
                 }
               }
             }
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -1537,11 +1899,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/leaderboard/{leaderboardId}/playerresult": {
       "patch": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "新增玩家結果 (Add a player result)",
         "description": "",
         "parameters": [
           {
@@ -1564,6 +1935,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -1576,11 +1950,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/leaderboard/{leaderboardId}/questionleaderboard": {
       "patch": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "更新問題排行榜 (Update questions leaderboard)",
         "description": "",
         "parameters": [
           {
@@ -1609,6 +1992,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -1621,11 +2007,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/leaderboard/{leaderboardId}/currentleaderboard": {
       "patch": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "更新排行榜 (Update current leaderboard)",
         "description": "",
         "parameters": [
           {
@@ -1654,6 +2049,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -1666,11 +2064,20 @@
           "403": {
             "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/leaderboard/{id}": {
       "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "取得排行榜 (Get a Leaderboard)",
         "description": "",
         "parameters": [
           {
@@ -1696,7 +2103,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   }

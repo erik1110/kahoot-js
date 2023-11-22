@@ -10,11 +10,11 @@ const doc = {
     schemes: ['http', 'https'],
     tags: [
         { name: 'Auth', description: '登入相關' },
-        { name: 'Users', description: '使用者' },
+        { name: 'User', description: '使用者' },
         { name: 'Quiz', description: '測驗' },
         { name: 'Games', description: '遊戲' },
-        { name: 'playerResults', description: '遊戲結果' },
-        { name: 'leaderboard', description: '排行榜' },
+        { name: 'PlayerResults', description: '遊戲結果' },
+        { name: 'Leaderboard', description: '排行榜' },
     ],
     // definitions,
     securityDefinitions: {

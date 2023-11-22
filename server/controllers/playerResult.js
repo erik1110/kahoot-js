@@ -4,6 +4,26 @@ const Quiz = require("../models/quiz")
 const Game = require("../models/game")
 
 const createPlayerResult = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '建立玩家結果 (Create a player result)'
+   */
+  /**
+  #swagger.parameters['parameter'] = {
+    in: 'body',
+    description: 'Body',
+    schema: {
+      'playerId': '6538974895cace142e42c86a',
+      'gameId': '6538974895cace142e42c813',
+      'score': 1,
+      'answers': 'b',
+    }
+  }
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerId, gameId, score, answers } = req.body
   const playerResult = new PlayerResult({
     playerId,
@@ -21,6 +41,16 @@ const createPlayerResult = async (req, res) => {
 }
 
 const getPlayerResults = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '取得全部玩家結果 (Get player results)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   try {
     const playerResults = await PlayerResult.find()
     res.status(200).send(playerResults)
@@ -30,6 +60,16 @@ const getPlayerResults = async (req, res) => {
 }
 
 const getPlayerResult = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '取得特定玩家結果 (Get the player result)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   let playerResult
   try {
     playerResult = await PlayerResult.findById(req.params.id)
@@ -43,6 +83,16 @@ const getPlayerResult = async (req, res) => {
 }
 
 const deletePlayerResult = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '刪除玩家結果 (Delete the player result)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send(`No PlayerResult with id: ${id}`)
@@ -57,6 +107,16 @@ const deletePlayerResult = async (req, res) => {
 }
 
 const updatePlayerResult = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '更新玩家結果 (Update the player result)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send(`No PlayerResult with id: ${id}`)
@@ -83,6 +143,16 @@ const updatePlayerResult = async (req, res) => {
 }
 
 const addAnswer = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '加答案 (Add an answer)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerResultId } = req.params
   const { questionIndex, 
     // answered, 
@@ -139,6 +209,16 @@ const addAnswer = async (req, res) => {
 }
 
 const calculatePoints = (quiz, time, pointType, answerTime) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '計算分數 (Calculate points)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   let pointsPerQuestion = quiz.pointsPerQuestion
   if (pointType === "Double") {
     return pointsPerQuestion * 2
@@ -150,6 +230,16 @@ const calculatePoints = (quiz, time, pointType, answerTime) => {
 }
 
 const getAnswers = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '取得所有答案 (Get the Answers)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerResultId } = req.params
   try {
     const playerResult = await PlayerResult.findById(playerResultId)
@@ -163,6 +253,16 @@ const getAnswers = async (req, res) => {
 }
 
 const getAnswer = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '取得答案 (Get the Answer)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerResultId, answerId } = req.params
   try {
     const playerResult = await PlayerResult.findById(playerResultId)
@@ -177,6 +277,16 @@ const getAnswer = async (req, res) => {
 }
 
 const deleteAnswer = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '刪除所有答案 (Delete the Answers)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerResultId, answerId } = req.params
   if (!mongoose.Types.ObjectId.isValid(playerResultId)) {
     return res.status(404).send(`No Player Result with id: ${playerResultId}`)
@@ -202,6 +312,16 @@ const deleteAnswer = async (req, res) => {
 }
 
 const updateAnswer = async (req, res) => {
+  /**
+   * #swagger.tags = ['PlayerResults']
+   * #swagger.summary = '更新答案 (Update the Answer)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { playerResultId, answerId } = req.params
   if (!mongoose.Types.ObjectId.isValid(playerResultId)) {
     return res.status(404).send(`No quiz with id: ${playerResultId}`)
