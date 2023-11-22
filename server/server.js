@@ -32,7 +32,7 @@ app.use("/api/leaderboard", authenticateToken, leaderboardRouter);
 
 const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);
-
+require('./routes')(app);
 app.listen(process.env.PORT, () => console.log(`Server started on port ${process.env.PORT}`));
 
 // socketServer setting below
