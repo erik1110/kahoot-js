@@ -9,7 +9,12 @@ const doc = {
     host: process.env.FRONTEND_URL,
     schemes: ['http', 'https'],
     tags: [
-        { name: 'Sign-in', description: '登入相關' },
+        { name: 'Auth', description: '登入相關' },
+        { name: 'Users', description: '使用者' },
+        { name: 'Quiz', description: '測驗' },
+        { name: 'Games', description: '遊戲' },
+        { name: 'playerResults', description: '遊戲結果' },
+        { name: 'leaderboard', description: '排行榜' },
     ],
     // definitions,
     securityDefinitions: {
