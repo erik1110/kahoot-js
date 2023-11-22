@@ -29,26 +29,23 @@ npm install
 
 You need four terminal instances - one for client app and three for backend servers.
 
+### Client
 ```bash
 cd client
 npm start
 ```
 
+### Server
 ```bash
 cd server
 npm run devStart
 ```
 
+### Update Swagger Docs
 ```bash
 cd server
-npm run devStartAuth
+npm run swagger
 ```
-
-```bash
-cd server
-npm run devStartSocket
-```
-
 ## Generate JWT tokens
 
 ```bash
