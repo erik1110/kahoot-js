@@ -6,7 +6,8 @@
   "scripts": {
     "devStart": "nodemon server.js",
     "devStartAuth": "nodemon authServer.js",
-    "devStartSocket": "nodemon socketServer.js"
+    "devStartSocket": "nodemon socketServer.js",
+    "swagger": "node ./swagger.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.9",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",

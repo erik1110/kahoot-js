@@ -6,6 +6,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
+  /**
+     * #swagger.tags = ['Auth']
+     * #swagger.summary = '登入帳號 (Login)'
+     */
+    /**
+    #swagger.responses[200] = {
+      description: 'OK',
+    }
+  */
   const user = await User.findOne({ userName: req.body.userName });
   if (user == null) {
     return res.status(400).send("Cannot find user");
@@ -35,6 +44,15 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
+  /**
+     * #swagger.tags = ['Auth']
+     * #swagger.summary = '註冊帳號 (Register)'
+     */
+    /**
+    #swagger.responses[200] = {
+      description: 'OK',
+    }    
+  */
   const {
     userType,
     firstName,

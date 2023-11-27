@@ -4,6 +4,24 @@ const Quiz = require("../models/quiz")
 const Game = require("../models/game")
 
 const createLeaderboard = async (req, res) => {
+  /**
+   * #swagger.tags = ['Leaderboard']
+   * #swagger.summary = '建立排行榜 (Create a Leaderboard)'
+   */
+  /**
+  #swagger.parameters['parameter'] = {
+    in: 'body',
+    description: 'Body',
+    schema: {
+      'gameId': '6538974895cace142e42c86a',
+      'playerResultList': [],
+    }
+  }
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { gameId, playerResultList } = req.body
 
   let game = await Game.findById(gameId)
@@ -34,6 +52,16 @@ const createLeaderboard = async (req, res) => {
 }
 
 const getLeaderboard = async (req, res) => {
+  /**
+   * #swagger.tags = ['Leaderboard']
+   * #swagger.summary = '取得排行榜 (Get a Leaderboard)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   let leaderboard
   try {
     leaderboard = await Leaderboard.findById(req.params.id)
@@ -47,6 +75,16 @@ const getLeaderboard = async (req, res) => {
 }
 
 const addPlayerResult = async (req, res) => {
+  /**
+   * #swagger.tags = ['Leaderboard']
+   * #swagger.summary = '新增玩家結果 (Add a player result)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { leaderboardId } = req.params
   const { playerResultId } = req.body
   let leaderboard
@@ -62,6 +100,16 @@ const addPlayerResult = async (req, res) => {
 }
 
 const updateQuestionLeaderboard = async (req, res) => {
+  /**
+   * #swagger.tags = ['Leaderboard']
+   * #swagger.summary = '更新問題排行榜 (Update questions leaderboard)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { leaderboardId } = req.params
   const { questionIndex, playerId, playerPoints } = req.body
   let leaderboard
@@ -81,6 +129,16 @@ const updateQuestionLeaderboard = async (req, res) => {
 }
 
 const updateCurrentLeaderboard = async (req, res) => {
+  /**
+   * #swagger.tags = ['Leaderboard']
+   * #swagger.summary = '更新排行榜 (Update current leaderboard)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { leaderboardId } = req.params
   const { questionIndex, playerId, playerCurrentScore } = req.body
   let leaderboard

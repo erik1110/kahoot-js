@@ -2,6 +2,46 @@ const mongoose = require("mongoose")
 const Quiz = require("../models/quiz")
 
 const createQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '建立題庫 (Create a quiz)'
+   */
+  /**
+  #swagger.parameters['parameter'] = {
+    in: 'body',
+    description: 'Body',
+    schema: {
+      'name': 'My quiz',
+      'backgroundImage': 'data:image/jpeg;base64,...',
+      'description': 'This is my quiz.',
+      'creatorName': 'Erik',
+      'pointsPerQuestion': 5,
+      'isPublic': true,
+      'tags': ['test1'],
+      'likesCount': [],
+      'questionList': [
+        {
+          'questionType': 'Quiz',
+          'pointType': 'Double',
+          'answerTime': 10,
+          'backgroundImage': '',
+          'question': 'Which planet is known as the Red Planet?',
+          'answerList': [
+            {
+              'name': 'a',
+              'body': 'Venus',
+              'isCorrect': false,
+            },
+          ],
+        }
+      ]
+    }
+  }
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const {
     name,
     backgroundImage,
@@ -37,6 +77,16 @@ const createQuiz = async (req, res) => {
 }
 
 const getQuizes = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得全部題庫 (Get all quizzes)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   try {
     const quizes = await Quiz.find()
     res.status(200).send(quizes)
@@ -46,6 +96,16 @@ const getQuizes = async (req, res) => {
 }
 
 const getPublicQuizes = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得公開題庫 (Get public quizzes)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { page } = req.query
   try {
     const LIMIT = 6
@@ -68,6 +128,16 @@ const getPublicQuizes = async (req, res) => {
 }
 
 const getTeacherQuizes = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得老師的題庫 (Get the teacher quizzes)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   let teacherId = req.params.teacherId
   try {
     const quizes = await Quiz.find({ creatorId: teacherId })
@@ -78,6 +148,16 @@ const getTeacherQuizes = async (req, res) => {
 }
 
 const getQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得特定題庫 (Get the quiz)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   let quiz
   try {
     quiz = await Quiz.findById(req.params.id)
@@ -91,6 +171,16 @@ const getQuiz = async (req, res) => {
 }
 
 const deleteQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '刪除題庫 (Delete the quiz)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send(`No quiz with id: ${id}`)
@@ -105,6 +195,16 @@ const deleteQuiz = async (req, res) => {
 }
 
 const updateQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '更新題庫 (Update the quiz)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send(`No quiz with id: ${id}`)
@@ -141,6 +241,16 @@ const updateQuiz = async (req, res) => {
 }
 
 const addQuestion = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '新增問題 (Add questions)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { quizId } = req.params
   const {
     questionType,
@@ -173,6 +283,16 @@ const addQuestion = async (req, res) => {
 }
 
 const getQuestions = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得全部問題 (Get all questions)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { quizId } = req.params
   try {
     const quiz = await Quiz.findById(quizId)
@@ -186,6 +306,16 @@ const getQuestions = async (req, res) => {
 }
 
 const getQuestion = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '取得特定問題 (Get the question by questionId)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { quizId, questionId } = req.params
   try {
     const quiz = await Quiz.findById(quizId)
@@ -200,6 +330,16 @@ const getQuestion = async (req, res) => {
 }
 
 const deleteQuestion = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '刪除問題 (Delete the question by questionId)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { quizId, questionId } = req.params
   if (!mongoose.Types.ObjectId.isValid(quizId)) {
     return res.status(404).send(`No quiz with id: ${quizId}`)
@@ -225,6 +365,16 @@ const deleteQuestion = async (req, res) => {
 }
 
 const updateQuestion = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '更新問題 (Update the question by questionId)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { quizId, questionId } = req.params
   if (!mongoose.Types.ObjectId.isValid(quizId)) {
     return res.status(404).send(`No quiz with id: ${quizId}`)
@@ -271,6 +421,16 @@ const updateQuestion = async (req, res) => {
 }
 
 const likeQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '按讚題庫 (Like the Quiz)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send(`No quiz with id: ${id}`)
@@ -294,6 +454,16 @@ const likeQuiz = async (req, res) => {
 }
 
 const getQuizesBySearch = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '題庫搜尋 (Search the Quizzes)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { searchQuery, tags } = req.query
 
   try {
@@ -312,6 +482,16 @@ const getQuizesBySearch = async (req, res) => {
 }
 
 const commentQuiz = async (req, res) => {
+  /**
+   * #swagger.tags = ['Quiz']
+   * #swagger.summary = '評論題庫 (Comment the Quiz)'
+   */
+  /**
+  #swagger.security=[{"Bearer": []}],
+  #swagger.responses[200] = {
+    description: 'OK',
+  }    
+  */
   const { id } = req.params
   const { comment } = req.body
 
