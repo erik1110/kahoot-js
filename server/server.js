@@ -43,7 +43,6 @@ const io = require("socket.io")(3001, {
 });
 
 let games = {};
-let leaderboard;
 let players = [];
 
 const addPlayer = (userName, socketId, pin) => {
@@ -79,8 +78,6 @@ io.on("connection", (socket) => {
 
     if (gameInstance) {
       // 檢查是否已經是房主
-      console.log("gameInstance", gameInstance)
-      console.log("user:", user)
       if (gameInstance.game.hostId.toString() === user._id.toString()) {
         callback("same", gameInstance.game._id);
       } else {
@@ -96,11 +93,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("start-game", (newQuiz) => {
+  socket.on("start-game", (pin, newQuiz) => {
     quiz = JSON.parse(JSON.stringify(newQuiz));
-    console.log("Move players to game");
-    console.log(game.pin);
-    socket.to(game.pin).emit("move-to-game-page", game._id);
+    socket.to(pin).emit("move-to-game-page", games[pin].game._id);
   });
 
   socket.on('kick-player', (data) => {
@@ -109,19 +104,19 @@ io.on("connection", (socket) => {
     socket.to(data.pin).emit('cancer-game', { message: 'You have been kicked from the game.' });
   });
 
-  socket.on("question-preview", (callback) => {
+  socket.on("question-preview", (gamePin, callback) => {
     callback();
-    socket.to(game.pin).emit("host-start-preview");
+    socket.to(gamePin).emit("host-start-preview");
   });
 
-  socket.on("start-question-timer", (time, question, callback) => {
+  socket.on("start-question-timer", (pin, time, question, callback) => {
     console.log("Send question " + question.questionIndex + " data to players");
-    socket.to(game.pin).emit("host-start-question-timer", time, question);
+    socket.to(pin).emit("host-start-question-timer", time, question);
     callback();
   });
 
   socket.on("send-answer-to-host", (data, score) => {
     let player = getPlayer(socket.id);
-    socket.to(game.pin).emit("get-answer-from-player", data, leaderboard._id, score, player);
+    socket.to(player.pin).emit("get-answer-from-player", data, games[player.pin].leaderboard._id, score, player);
   });
 });

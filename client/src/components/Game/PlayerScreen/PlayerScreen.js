@@ -90,9 +90,6 @@ function PlayerScreen() {
     const updatedPlayerResult = await dispatch(
       addAnswer(answer, playerResult._id)
     )
-    console.log(
-      updatedPlayerResult.answers[updatedPlayerResult.answers.length - 1]
-    )
     setResult(
       updatedPlayerResult.answers[updatedPlayerResult.answers.length - 1]
     )
