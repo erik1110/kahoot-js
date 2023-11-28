@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  Paper,
-  Grid,
-  Typography,
-  Container,
-  Snackbar,
-} from "@material-ui/core";
-import Alert from '@material-ui/lab/Alert';
+import { Avatar, Button, Paper, Grid, Typography, Container, Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import useStyles from "./styles";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
@@ -36,19 +28,19 @@ function Auth() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const isLanguageEnglish = useSelector((state) => state.language.isEnglish)
+  const isLanguageEnglish = useSelector((state) => state.language.isEnglish);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isSignup) {
         const response = await dispatch(register(formData, history));
-        console.log("response:", response)
+        console.log("response:", response);
         if (response.status === 200) {
-          console.log("Register OK!")
+          console.log("Register OK!");
         } else if (response.status === 400) {
-          const errorMessage= response.error.response.data.message;
-          if (errorMessage.includes('shorter than the minimum allowed length')) {
+          const errorMessage = response.error.response.data.message;
+          if (errorMessage.includes("shorter than the minimum allowed length")) {
             setErrorMessage(`Username must be at least five characters.`);
           } else {
             setErrorMessage(`Registration failed: ${errorMessage}`);
@@ -60,7 +52,7 @@ function Auth() {
         await dispatch(login(formData, history));
       }
     } catch (error) {
-      console.log("error:", error)
+      console.log("error:", error);
       setErrorMessage("An error occurred. Please try again.");
     }
   };
@@ -85,37 +77,20 @@ function Auth() {
             open={!!errorMessage}
             autoHideDuration={6000}
             onClose={() => setErrorMessage("")}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           >
             <Alert severity="error">{errorMessage}</Alert>
           </Snackbar>
         )}
         <Typography component="h1" variant="h5">
-          {isSignup
-            ? isLanguageEnglish
-              ? "Sign up"
-              : "註冊"
-            : isLanguageEnglish
-            ? "Sign in"
-            : "登入"}
+          {isSignup ? (isLanguageEnglish ? "Sign up" : "註冊") : isLanguageEnglish ? "Sign in" : "登入"}
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {isSignup && (
               <>
-                <Input
-                  name="firstName"
-                  label={isLanguageEnglish ? "First Name" : "名字"}
-                  handleChange={handleChange}
-                  autoFocus
-                  half
-                />
-                <Input
-                  name="lastName"
-                  label={isLanguageEnglish ? "Last Name" : "姓氏"}
-                  handleChange={handleChange}
-                  half
-                />
+                <Input name="firstName" label={isLanguageEnglish ? "First Name" : "名字"} handleChange={handleChange} autoFocus half />
+                <Input name="lastName" label={isLanguageEnglish ? "Last Name" : "姓氏"} handleChange={handleChange} half />
                 <SelectInput
                   name="userType"
                   value={formData.userType}
@@ -126,20 +101,11 @@ function Auth() {
                     { value: "Student", label: "Student" },
                   ]}
                 />
-                <Input
-                  name="mail"
-                  label={isLanguageEnglish ? "Email address" : "電子郵件"}
-                  handleChange={handleChange}
-                  type="email"
-                />
+                <Input name="mail" label={isLanguageEnglish ? "Email address" : "電子郵件"} handleChange={handleChange} type="email" />
               </>
             )}
 
-            <Input
-              name="userName"
-              label={isLanguageEnglish ? "User Name" : "帳號名稱"}
-              handleChange={handleChange}
-            />
+            <Input name="userName" label={isLanguageEnglish ? "User Name" : "帳號名稱"} handleChange={handleChange} />
             <Input
               name="password"
               label={isLanguageEnglish ? "Password" : "密碼"}
@@ -156,22 +122,10 @@ function Auth() {
               />
             )}
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            {isSignup
-              ? isLanguageEnglish
-                ? "Sign up"
-                : "註冊"
-              : isLanguageEnglish
-              ? "Sign in"
-              : "登入"}
+          <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            {isSignup ? (isLanguageEnglish ? "Sign up" : "註冊") : isLanguageEnglish ? "Sign in" : "登入"}
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
                 {isSignup
@@ -187,7 +141,7 @@ function Auth() {
         </form>
       </Paper>
     </Container>
-  )
+  );
 }
 
 export default Auth;
