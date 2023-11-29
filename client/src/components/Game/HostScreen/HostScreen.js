@@ -90,10 +90,10 @@ function HostScreen() {
 
   const startGame = () => {
     console.log("1. startGame")
-    socket.emit("start-game", quiz)
-    socket.emit("question-preview", () => {
-      startPreviewCountdown(5, currentQuestionIndex)
-    })
+    socket.emit("start-game", game.pin, quiz)
+    socket.emit("question-preview", game.pin, () => {
+      startPreviewCountdown(5, currentQuestionIndex);
+    });
     setIsGameStarted((prevstate) => !prevstate)
     setIsPreviewScreen(true)
   }
@@ -142,7 +142,7 @@ function HostScreen() {
     setIsLeaderboardScreen(true)
     setTimeout(() => {
       if (index < quiz.questionList.length) {
-        socket.emit("question-preview", () => {
+        socket.emit("question-preview", game.pin, () => {
           startPreviewCountdown(5, index)
           setPlayerList([])
         })
@@ -165,12 +165,12 @@ function HostScreen() {
           (answer) => answer.isCorrect === true
         ).length,
       }
-      socket.emit("start-question-timer", time, question, () => {
+      socket.emit("start-question-timer", game.pin, time, question, () => {
         startQuestionCountdown(time, index + 1)
       })
     }
   }
-  console.log(playerList)
+  console.log("playerList:", playerList)
   return (
     <div className={styles.page}>
       {!isGameStarted && (
