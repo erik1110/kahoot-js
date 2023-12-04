@@ -22,3 +22,13 @@ export const register = (formData, history) => async (dispatch) => {
     return { status: 400, error };
   }
 };
+
+export const guestLogin = (formData, history) => async (dispatch) => {
+  try {
+    const { data } = await api.guestLogin(formData);
+    dispatch({ type: "GUEST", data });
+    history.push("/");
+  } catch (error) {
+    console.log(error);
+  }
+};

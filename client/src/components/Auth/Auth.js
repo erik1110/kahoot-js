@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "./Input";
 import SelectInput from "./SelectInput";
-import { login, register } from "../../actions/auth";
+import { login, register, guestLogin } from "../../actions/auth";
 
 const initialState = {
   userType: "",
@@ -56,6 +56,15 @@ function Auth() {
       setErrorMessage("An error occurred. Please try again.");
     }
   };
+  const handleGuestLogin = async () => {
+    try {
+      await dispatch(guestLogin(formData, history));
+    } catch (error) {
+      console.log("Guest login error:", error);
+      setErrorMessage("An error occurred. Please try again.");
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -125,6 +134,11 @@ function Auth() {
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             {isSignup ? (isLanguageEnglish ? "Sign up" : "註冊") : isLanguageEnglish ? "Sign in" : "登入"}
           </Button>
+          {!isSignup && (
+            <Button fullWidth variant="contained" className={classes.submit} onClick={handleGuestLogin}>
+              {isLanguageEnglish ? "Guest Login" : "訪客登入"}
+            </Button>
+          )}
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
